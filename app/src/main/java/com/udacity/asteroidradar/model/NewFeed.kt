@@ -20,6 +20,7 @@ data class NewFeed(
         nearEarthObjectsJson ?: return ArrayList()
         val asteroidList = ArrayList<Asteroid>()
         val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
+        val simpleDateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         for (formattedDate in nextSevenDaysFormattedDates) {
             val nearObj = nearEarthObjectsJson
             if (nearObj.has(formattedDate)) {
@@ -50,7 +51,8 @@ data class NewFeed(
                         estimatedDiameter,
                         relativeVelocity,
                         distanceFromEarth,
-                        isPotentiallyHazardous
+                        isPotentiallyHazardous,
+                        simpleDateFormat.parse(formattedDate).time
                     )
                     asteroidList.add(asteroid)
                 }

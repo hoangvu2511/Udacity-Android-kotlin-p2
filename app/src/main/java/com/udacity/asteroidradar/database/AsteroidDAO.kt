@@ -14,6 +14,14 @@ interface AsteroidDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(list: List<Asteroid>)
 
-    @Query("SELECT * FROM asteroid WHERE closeApproachDate = :today ORDER BY closeApproachDate DESC")
-    fun loadAll(today: String = TimeUtils.getTodayFormat()): LiveData<List<Asteroid>>
+    @Query("SELECT * FROM asteroid WHERE closeApproachDate = :today")
+    suspend fun loadToday(today: String = TimeUtils.getTodayFormat()): List<Asteroid>
+
+
+    @Query("SELECT * FROM asteroid ORDER BY closeApproachDate DESC")
+    suspend fun loadAllSaved(): List<Asteroid>
+
+    @Query("SELECT * FROM asteroid WHERE timeInMilli BETWEEN :start AND :end ORDER BY timeInMilli")
+    suspend fun loadWeek(start: Long, end: Long): List<Asteroid>
+
 }

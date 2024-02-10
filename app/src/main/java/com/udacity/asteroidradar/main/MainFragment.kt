@@ -49,9 +49,15 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.show_week_asteroid -> {}
-            R.id.show_today_asteroid -> {}
-            R.id.show_saved_asteroid -> {}
+            R.id.show_week_asteroid -> {
+                viewModel.loadWeek()
+            }
+            R.id.show_today_asteroid -> {
+                viewModel.loadToday()
+            }
+            R.id.show_saved_asteroid -> {
+                viewModel.loadAllSaved()
+            }
         }
         return true
     }
@@ -87,7 +93,7 @@ class MainFragment : Fragment() {
                 .into(binding.activityMainImageOfTheDay)
         }
 
-        AsteroidDatabase.INSTANCE?.asteroidDao()?.loadAll()?.observe(viewLifecycleOwner) {
+        viewModel.listAsteroid.observe(viewLifecycleOwner) {
             binding.statusLoadingWheel.visibility = View.GONE
             adapter.submitList(it)
         }
