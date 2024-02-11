@@ -22,7 +22,7 @@ abstract class AsteroidDatabase : RoomDatabase() {
                         AsteroidDatabase::class.java,
                         "asteroid_database"
                     )
-                        .addMigrations()
+                        .addMigrations(*ListMigrations.list)
                         .build()
                 }
             }

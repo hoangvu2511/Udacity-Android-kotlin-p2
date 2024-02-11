@@ -7,6 +7,7 @@ import com.udacity.asteroidradar.api.NetworkUtils
 import com.udacity.asteroidradar.database.AsteroidDAO
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.model.Asteroid
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,7 +18,7 @@ class AsteroidWorkManager(appContext: Context, workerParameters: WorkerParameter
     private val workerScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun doWork(): Result {
-        workerScope.launch {
+        workerScope.launch(CoroutineExceptionHandler { _, throwable -> throwable.printStackTrace() }) {
             val date = TimeUtils.getTodayFormat()
             val result = NetworkUtils.loadNewFeed(date, date)
             val listAsteroid = result.parseAsteroidsJsonResult()
